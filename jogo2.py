@@ -1,7 +1,7 @@
 import pygame
 import sys
 
-# música
+# Configurações da música
 pygame.mixer.init()
 pygame.init()
 pygame.mixer.music.load("sons/musica_de_fundo.mp3")
