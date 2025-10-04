@@ -1,12 +1,15 @@
 import pygame
 import sys
+import random
 
-#música
+# música
 pygame.mixer.init()
 pygame.init()
 pygame.mixer.music.load("sons/musica_de_fundo.mp3")
 pygame.mixer.music.play(-1)
 
+
+som_certo = pygame.mixer.Sound("sons/aparecer_letra.mp3")
 # --------- Configurações ---------
 FPS = 60
 
@@ -15,12 +18,26 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 CORAL = (229, 65, 51, 1)
 GRAY = (230, 230, 230)
+BLUE = (0, 100, 200)
 
 pygame.display.set_caption("Menu Inicial - Jogo Exemplo")
 FONT = pygame.font.SysFont("Goudy Stout", 48)
 FONT_MSG = pygame.font.Font(None, 36)
 
-#Efeito máquina de escrever
+# Temas do jogo
+temas = {
+    "Professores": ["hugo", "joaildo", "carlos eugenio", "saulo", "geam", "botinni"],
+    "Matérias": ["matematica", "geografia", "biologia", "fisica", "quimica", "ingles"],
+    "Geral": ["thales", "ricardo", "rose", "bloco d", "max", "artes"],
+    "Cursos": {
+        "Informática": ["python", "desing web", "pedro iuri", "processador", "romerito", "java script"],
+        "Vestuário": ["croqui", "laila", "modelagem", "confecção", "cad", "confecção"],
+        "Eletrotécnica": ["circuito", "transformador", "jonas", "condutor", "isolamento","francisco"],
+        "Têxtil": ["algodão", "beneficiamento", "tecelagem", "tingimento","padronagem","alvejamento"]
+    }
+}
+
+# Efeito máquina de escrever
 def texto_digitado(surface, texto, x, y, cor, delay=20):
     exibindo = ""
     for letra in texto:
@@ -39,15 +56,15 @@ def tela_intro(screen, background):
     x = (screen_width - largura) // 2
     y = (screen_height - altura) // 2
 
-    #Container semi-transparente
+    # Container semi-transparente
     container = pygame.Surface((largura, altura))
     container.set_alpha(200)
     container.fill(WHITE)
     screen.blit(container, (x, y))
 
-    texto_digitado(screen, "Bem-vindo ao jogo da forca!", x + 20, y + 40, BLACK, delay=20)
-    texto_digitado(screen, "Escolha um tema e acerte as letras para descobrir a palavra,", x + 20, y + 80, BLACK, delay=20)
-    texto_digitado(screen, "e lembre-se, você pode errar apenas 6 vezes!", x + 20, y + 120, BLACK, delay=20)
+    texto_digitado(screen,"Bem-vindo ao jogo da forca!", x + 20, y + 40, BLACK, delay=20)
+    texto_digitado(screen,"Escolha um tema sobre o IFRN-Caicó e acerte as letras para descobrir", x + 20, y + 80, BLACK, delay=20)
+    texto_digitado(screen,"a palavra, e lembre-se, você pode errar apenas 6 vezes!", x + 20, y + 120, BLACK, delay=20)
 
     pygame.display.flip()
     pygame.time.delay(2000)
@@ -59,9 +76,10 @@ class Button:
 
         if tema:
             self.default_color = BLACK  
+            self.highlight_color = CORAL
         else:
             self.default_color = WHITE   
-        self.highlight_color = CORAL
+            self.highlight_color = CORAL
 
         if small:
             font = pygame.font.SysFont("Goudy Stout", 28)
@@ -83,6 +101,7 @@ class Button:
         if self.rect.collidepoint(mouse_pos):
             self.callback()
 
+# Menu principal
 class Menu:
     def __init__(self, screen, background):
         self.screen = screen
@@ -106,8 +125,8 @@ class Menu:
 
         escolha = None
         while True:
-            temas = Temas(self.screen, self.background)
-            escolha = temas.run()
+            temas_menu = Temas(self.screen, self.background)
+            escolha = temas_menu.run()
 
             if escolha == "Cursos":
                 while True:
@@ -126,6 +145,14 @@ class Menu:
                 break
 
         print("Tema escolhido:", escolha)
+
+        # Escolha aleatória da palavra
+        if escolha in ["Informática", "Vestuário", "Eletrotécnica", "Têxtil"]:
+            palavra = random.choice(temas["Cursos"][escolha])
+        else:
+            palavra = random.choice(temas[escolha])
+
+        jogar(self.screen, palavra, self.background)
         self.running = False
 
     def show_options(self):
@@ -153,6 +180,7 @@ class Menu:
             pygame.display.flip()
             clock.tick(FPS)
 
+
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
@@ -175,6 +203,7 @@ class Game:
             clock.tick(FPS)
         pygame.quit()
 
+
 class Temas:
     def __init__(self, screen, background, modo="principal"):
         self.screen = screen
@@ -194,15 +223,14 @@ class Temas:
         self.container_rect = pygame.Rect(
             (screen_width - largura) // 2,
             (screen_height - altura) // 2,
-            largura,
-            altura
+            largura,altura
         )
         if modo == "principal":
             self.buttons = [
-                Button("Professores",(mid_x, start_y), self.select_professores, tema=True),
-                Button("Matérias",(mid_x, start_y + gap), self.select_materias, tema=True),
-                Button("Geral",(mid_x, start_y + 2 * gap), self.select_geral, tema=True),
-                Button("Cursos",(mid_x, start_y + 3 * gap), self.select_cursos, tema=True),
+                Button("Professores",(mid_x, start_y),self.select_professores, tema=True),
+                Button("Matérias",(mid_x, start_y + gap),self.select_materias, tema=True),
+                Button("Geral",(mid_x, start_y + 2 * gap),self.select_geral, tema=True),
+                Button("Cursos",(mid_x, start_y + 3 * gap),self.select_cursos, tema=True),
             ]
         elif modo == "cursos":
             self.buttons = [
@@ -213,9 +241,9 @@ class Temas:
                 Button("Voltar",(mid_x, start_y + 4 * gap),self.select_voltar, small=True, tema=True),
             ]
 
-    def select_professores(self): 
+    def select_professores(self):
         self.select("Professores")
-    def select_materias(self): 
+    def select_materias(self):
         self.select("Matérias")
     def select_geral(self): 
         self.select("Geral")
@@ -233,7 +261,6 @@ class Temas:
         self.select("Voltar")
 
     def select(self, nome):
-        print(f"[Temas] selecionado: {nome}")
         self.selected = nome
         self.running = False
 
@@ -261,6 +288,126 @@ class Temas:
             clock.tick(FPS)
 
         return self.selected
+
+
+#Forca(desenho da base da forca e o boneco de acordo com a quantidade de erros)
+def desenhar_boneco(surface, erros, offset_y=0):
+ 
+    pygame.draw.line(surface, BLACK, (100, 600), (300, 600), 6)                 
+    pygame.draw.line(surface, BLACK, (200, 600), (200, 100 + offset_y), 6)       
+    pygame.draw.line(surface, BLACK, (200, 100 + offset_y), (400, 100 + offset_y), 6) 
+    pygame.draw.line(surface, BLACK, (400, 100 + offset_y), (400, 180 + offset_y), 6)
+        
+
+    if erros > 0:
+        pygame.draw.circle(surface, BLACK, (400, 220 + offset_y), 40, 6)
+    if erros > 1:
+        pygame.draw.line(surface, BLACK, (400, 260 + offset_y), (400, 400 + offset_y), 6)
+    if erros > 2:
+        pygame.draw.line(surface, BLACK, (400, 280 + offset_y), (330, 350 + offset_y), 6)     
+    if erros > 3:
+        pygame.draw.line(surface, BLACK, (400, 280 + offset_y), (470, 350 + offset_y), 6)
+    if erros > 4:
+        pygame.draw.line(surface, BLACK, (400, 400 + offset_y), (330, 480 + offset_y), 6)
+    if erros > 5:
+        pygame.draw.line(surface, BLACK, (400, 400 + offset_y), (470, 480 + offset_y), 6)
+      
+
+def jogar(screen, palavra, background):
+    letras_certas = []
+    letras_erradas = []
+    chances = 6
+    teclado = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    rodando = True
+    clock = pygame.time.Clock()
+    FONT_SMALL = pygame.font.SysFont("Arial", 35)
+
+ 
+    fundo_transparente = background.copy()
+    fundo_transparente.set_alpha(120)
+    
+    erros = 6 - chances
+    desenhar_boneco(screen, erros)
+
+
+    inicio_x = 470
+    inicio_y = 500  
+    largura_tecla = 45
+    altura_tecla = 45
+    espaco = 8
+    max_x = 1130
+    
+
+    while rodando:
+        screen.fill(WHITE)
+        screen.blit(fundo_transparente, (0, 0))  
+
+        #Exibicao das palavras
+        exibida = ""
+        for letra in palavra:
+            if letra in letras_certas:
+                exibida += letra.upper() + " "
+            else:
+                exibida += "_ "
+        render = FONT_SMALL.render(exibida, True, BLACK)
+        screen.blit(render, (500, 100))
+
+        #Letras erradas
+        erradas = FONT_SMALL.render("Erros: " + ", ".join(letras_erradas), True, CORAL)
+        screen.blit(erradas, (500, 140))
+
+        desenhar_boneco(screen, 6 - chances)
+
+        #Teclado 
+        x, y = inicio_x, inicio_y
+        for letra in teclado:
+            if letra.lower() in letras_certas:
+                cor_retangulo = (0, 200, 0)
+            elif letra.lower() in letras_erradas:
+                cor_retangulo = (200, 0, 0)
+            else:
+                cor_retangulo = (0, 150, 255)
+
+            pygame.draw.rect(screen, cor_retangulo, (x, y, largura_tecla, altura_tecla))
+            screen.blit(FONT_SMALL.render(letra, True, WHITE), (x + 12, y + 5))
+
+            x += largura_tecla + espaco
+            if x > max_x:
+                x = inicio_x
+                y += altura_tecla + espaco
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                mouse = pygame.mouse.get_pos()
+                x, y = inicio_x, inicio_y
+                for letra in teclado:
+                    rect = pygame.Rect(x, y, largura_tecla, altura_tecla)
+                    if rect.collidepoint(mouse):
+                        if letra.lower() in palavra and letra.lower() not in letras_certas:
+                            letras_certas.append(letra.lower())
+                            som_certo.play()
+                        elif letra.lower() not in letras_erradas and letra.lower() not in letras_certas:
+                            letras_erradas.append(letra.lower())
+                            chances -= 1
+                    x += largura_tecla + espaco
+                    if x > max_x:
+                        x = inicio_x
+                        y += altura_tecla + espaco
+                        
+                    if chances == 0:
+                        print("Você perdeu! Palavra era:", palavra)
+                        rodando = False
+                    elif all(letra in letras_certas for letra in palavra):
+                        print("Você venceu!")
+                        rodando = False
+
+
+        clock.tick(FPS)
 
 if __name__ == "__main__":
     Game().run()
