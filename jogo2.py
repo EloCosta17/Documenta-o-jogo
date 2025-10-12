@@ -8,7 +8,6 @@ pygame.init()
 pygame.mixer.music.load("sons/musica_de_fundo.mp3")
 pygame.mixer.music.play(-1)
 
-
 som_certo = pygame.mixer.Sound("sons/aparecer_letra.mp3")
 # --------- Configurações ---------
 FPS = 60
@@ -26,11 +25,11 @@ FONT_MSG = pygame.font.Font(None, 36)
 
 # Temas do jogo
 temas = {
-    "Professores": ["hugo", "joaildo", "carlos eugenio", "saulo", "geam", "botinni"],
+    "Professores": ["hugo", "joaildo", "eugenio", "saulo", "geam", "botinni"],
     "Matérias": ["matematica", "geografia", "biologia", "fisica", "quimica", "ingles"],
     "Geral": ["thales", "ricardo", "rose", "bloco d", "max", "artes"],
     "Cursos": {
-        "Informática": ["python", "desing web", "pedro iuri", "processador", "romerito", "java script"],
+        "Informática": ["python", "desing web", "iuri", "processador", "romerito", "java"],
         "Vestuário": ["croqui", "laila", "modelagem", "confecção", "cad", "confecção"],
         "Eletrotécnica": ["circuito", "transformador", "jonas", "condutor", "isolamento","francisco"],
         "Têxtil": ["algodão", "beneficiamento", "tecelagem", "tingimento","padronagem","alvejamento"]
@@ -152,7 +151,7 @@ class Menu:
         else:
             palavra = random.choice(temas[escolha])
 
-        jogar(self.screen, palavra, self.background)
+        jogar(self.screen, palavra, self.background, escolha)
         self.running = False
 
     def show_options(self):
@@ -183,7 +182,7 @@ class Menu:
 
 class Game:
     def __init__(self):
-        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((1280, 720))
         self.background = pygame.image.load("imagens/desenho IF.png").convert()
 
     def run(self):
@@ -290,7 +289,7 @@ class Temas:
         return self.selected
 
 
-#Forca(desenho da base da forca e o boneco de acordo com a quantidade de erros)
+#Forca (desenho da base da forca e o boneco de acordo com a quantidade de erros)
 def desenhar_boneco(surface, erros, offset_y=0):
  
     pygame.draw.line(surface, BLACK, (100, 600), (300, 600), 6)                 
@@ -313,10 +312,14 @@ def desenhar_boneco(surface, erros, offset_y=0):
         pygame.draw.line(surface, BLACK, (400, 400 + offset_y), (470, 480 + offset_y), 6)
       
 
-def jogar(screen, palavra, background):
+def jogar(screen, palavra, background, escolha):
     letras_certas = []
     letras_erradas = []
     chances = 6
+
+    #Variáveis de pontuação
+    pontuacao = 0
+
     teclado = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     rodando = True
     clock = pygame.time.Clock()
@@ -341,24 +344,33 @@ def jogar(screen, palavra, background):
     while rodando:
         screen.fill(WHITE)
         screen.blit(fundo_transparente, (0, 0))  
+        
+        
+        palavra_tema = f"Tema:{escolha}"
+        render_tema = FONT_SMALL.render(palavra_tema, True, BLUE)
+        screen.blit(render_tema,(500,90))
 
-        #Exibicao das palavras
+        #Mostrar pontuação
+        texto_pontos = f"Pontuação: {pontuacao}"
+        render_pontos = FONT_SMALL.render(texto_pontos, True, BLUE)
+        screen.blit(render_pontos, (950, 90))
+
+        # Exibição das palavras
         exibida = ""
         for letra in palavra:
-            if letra in letras_certas:
+            # Letras acertadas ou espaços já aparecem
+            if letra in letras_certas or letra == " ":
                 exibida += letra.upper() + " "
             else:
                 exibida += "_ "
+
         render = FONT_SMALL.render(exibida, True, BLACK)
-        screen.blit(render, (500, 100))
+        screen.blit(render, (500, 130))
 
-        #Letras erradas
-        erradas = FONT_SMALL.render("Erros: " + ", ".join(letras_erradas), True, CORAL)
-        screen.blit(erradas, (500, 140))
-
+        
         desenhar_boneco(screen, 6 - chances)
 
-        #Teclado 
+        # Teclado 
         x, y = inicio_x, inicio_y
         for letra in teclado:
             if letra.lower() in letras_certas:
@@ -388,25 +400,34 @@ def jogar(screen, palavra, background):
                 for letra in teclado:
                     rect = pygame.Rect(x, y, largura_tecla, altura_tecla)
                     if rect.collidepoint(mouse):
+                        #Sistema de pontuação adaptável
                         if letra.lower() in palavra and letra.lower() not in letras_certas:
                             letras_certas.append(letra.lower())
                             som_certo.play()
+                            pontuacao += 10  # +10 pontos por acerto
+
                         elif letra.lower() not in letras_erradas and letra.lower() not in letras_certas:
                             letras_erradas.append(letra.lower())
                             chances -= 1
+                            pontuacao -= 5   # -5 pontos por erro
+
                     x += largura_tecla + espaco
                     if x > max_x:
                         x = inicio_x
                         y += altura_tecla + espaco
                         
-                    if chances == 0:
-                        print("Você perdeu! Palavra era:", palavra)
-                        rodando = False
-                    elif all(letra in letras_certas for letra in palavra):
-                        print("Você venceu!")
-                        rodando = False
+            if chances == 0:
+                pontuacao_final = pontuacao
+                print(f"Você perdeu! Palavra era: {palavra}")
+                print(f"Sua pontuação final foi: {pontuacao_final}")
+                rodando = False
+            elif all(letra in letras_certas for letra in palavra):
+                pontuacao_final = pontuacao
+                print("Você venceu!")
+                print(f"Sua pontuação final foi: {pontuacao_final}")
+                rodando = False
 
-
+    
         clock.tick(FPS)
 
 if __name__ == "__main__":
