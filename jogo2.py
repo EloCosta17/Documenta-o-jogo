@@ -149,7 +149,6 @@ class Menu:
                 break
 
         print("Tema escolhido:", escolha)
-
         #escolha das palavras aleatoriamente
         if escolha in ["Informática", "Vestuário", "Eletrotécnica", "Têxtil"]:
             palavra = random.choice(temas["Cursos"][escolha])
@@ -331,13 +330,11 @@ def jogar(screen, palavra, background, escolha):
     clock = pygame.time.Clock()
     FONT_SMALL = pygame.font.SysFont("Arial", 35)
 
- 
     fundo_transparente = background.copy()
     fundo_transparente.set_alpha(120)
-    
+
     erros = 6 - chances
     desenhar_boneco(screen, erros)
-
 
     inicio_x = 470
     inicio_y = 500  
@@ -345,7 +342,16 @@ def jogar(screen, palavra, background, escolha):
     altura_tecla = 45
     espaco = 8
     max_x = 1130
-    
+
+    #imagens dos botões
+    img_voltar = pygame.image.load("imagens/voltar_vermelho.png").convert_alpha()
+    img_sair = pygame.image.load("imagens/sair_vermelho.png").convert_alpha()
+    img_voltar = pygame.transform.scale(img_voltar, (50, 50))
+    img_sair = pygame.transform.scale(img_sair, (50, 50))
+    pos_voltar = (screen.get_width() - 120, 20)
+    pos_sair = (screen.get_width() - 60, 20)
+    rect_voltar = pygame.Rect(pos_voltar, img_voltar.get_size())
+    rect_sair = pygame.Rect(pos_sair, img_sair.get_size())
 
     while rodando:
         screen.fill(WHITE)
@@ -369,7 +375,6 @@ def jogar(screen, palavra, background, escolha):
         render = FONT_SMALL.render(exibida, True, BLACK)
         screen.blit(render, (500, 130))
 
-        
         desenhar_boneco(screen, 6 - chances)
 
         #teclado
@@ -390,6 +395,9 @@ def jogar(screen, palavra, background, escolha):
                 x = inicio_x
                 y += altura_tecla + espaco
 
+        screen.blit(img_voltar, pos_voltar)
+        screen.blit(img_sair, pos_sair)
+
         pygame.display.flip()
 
         for event in pygame.event.get():
@@ -398,11 +406,19 @@ def jogar(screen, palavra, background, escolha):
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pygame.mouse.get_pos()
+
+                #verificação dos cliques botões (o de voltar tá com problema)
+                if rect_voltar.collidepoint(mouse):
+                    return  
+                elif rect_sair.collidepoint(mouse):
+                    pygame.quit()
+                    sys.exit()
+
+                #clique do teclado
                 x, y = inicio_x, inicio_y
                 for letra in teclado:
                     rect = pygame.Rect(x, y, largura_tecla, altura_tecla)
                     if rect.collidepoint(mouse):
-                        #pontuação adaptável
                         if letra.lower() in palavra and letra.lower() not in letras_certas:
                             letras_certas.append(letra.lower())
                             som_certo.play()
@@ -418,7 +434,8 @@ def jogar(screen, palavra, background, escolha):
                     if x > max_x:
                         x = inicio_x
                         y += altura_tecla + espaco
-                        
+
+            #mensagens finais
             if chances == 0:
                 pontuacao_final = pontuacao
                 print(f"Você perdeu! Palavra era: {palavra}")
@@ -430,7 +447,6 @@ def jogar(screen, palavra, background, escolha):
                 print(f"Sua pontuação final foi: {pontuacao_final}")
                 rodando = False
 
-    
         clock.tick(FPS)
 
 if __name__ == "__main__":
