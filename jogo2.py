@@ -155,8 +155,9 @@ class Menu:
         else:
             palavra = random.choice(temas[escolha])
 
-        jogar(self.screen, palavra, self.background, escolha)
-        self.running = False
+        resultado = jogar(self.screen, palavra, self.background, escolha)
+        if resultado != "voltar":
+            self.running = False
 
     def show_options(self):
         print("Abrindo opções...")
@@ -409,7 +410,7 @@ def jogar(screen, palavra, background, escolha):
 
                 #verificação dos cliques botões (o de voltar tá com problema)
                 if rect_voltar.collidepoint(mouse):
-                    return  
+                    return "voltar"
                 elif rect_sair.collidepoint(mouse):
                     pygame.quit()
                     sys.exit()
@@ -440,6 +441,9 @@ def jogar(screen, palavra, background, escolha):
                 pontuacao_final = pontuacao
                 print(f"Você perdeu! Palavra era: {palavra}")
                 print(f"Sua pontuação final foi: {pontuacao_final}")
+                resultado = tela_game_over(screen, background)
+                if resultado == "jogar_novamente":
+                    return "voltar"  #volta ao menu
                 rodando = False
             elif all(letra in letras_certas for letra in palavra):
                 pontuacao_final = pontuacao
@@ -448,6 +452,77 @@ def jogar(screen, palavra, background, escolha):
                 rodando = False
 
         clock.tick(FPS)
+
+     
+        def tela_game_over(screen, background):
+            # Escurece o fundo com transparência
+            overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+            overlay.fill((0, 0, 0, 180))
+            screen.blit(background, (0, 0))
+            screen.blit(overlay, (0, 0))
+
+            # Texto "GAME OVER"
+            font_gameover = pygame.font.SysFont("Kristen ITC", 120)
+            texto = font_gameover.render("GAME OVER", True, (255, 0, 0))
+            rect_texto = texto.get_rect(center=(screen.get_width() // 2, 130))
+            screen.blit(texto, rect_texto)
+
+            # Texto explicativo
+            font_msg = pygame.font.SysFont("Arial", 40)
+            msg = font_msg.render("Você foi enforcado! Tente novamente.", True, (WHITE))
+            msg_rect = msg.get_rect(center=(screen.get_width() // 2 + 30, 300))
+            screen.blit(msg, msg_rect)
+
+            # Botões
+            font_botao = pygame.font.SysFont("Kristen ITC", 40)
+            cor_normal = WHITE
+            cor_hover = (255, 0, 0)
+
+            btn_jogar_rect = pygame.Rect(470, 400, 350, 70)
+            btn_sair_rect = pygame.Rect(470, 500, 350, 70)
+
+            clock = pygame.time.Clock()
+            esperando = True
+
+            while esperando:
+                mouse = pygame.mouse.get_pos()
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+
+                    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                        if btn_jogar_rect.collidepoint(mouse):
+                            esperando = False
+                            return "jogar_novamente"
+
+                        elif btn_sair_rect.collidepoint(mouse):
+                            pygame.quit()
+                            sys.exit()
+
+                # Redesenhar tudo
+                screen.blit(background, (0, 0))
+                screen.blit(overlay, (0, 0))
+                screen.blit(texto, rect_texto)
+                screen.blit(msg, msg_rect)
+
+                # Botão Jogar Novamente
+                cor_jogar = cor_hover if btn_jogar_rect.collidepoint(mouse) else cor_normal
+                pygame.draw.rect(screen, cor_jogar, btn_jogar_rect, border_radius=10)
+                txt_jogar = font_botao.render("Jogar Novamente", True, (0, 0, 0))
+                screen.blit(txt_jogar, txt_jogar.get_rect(center=btn_jogar_rect.center))
+
+                # Botão Sair
+                cor_sair = cor_hover if btn_sair_rect.collidepoint(mouse) else cor_normal
+                pygame.draw.rect(screen, cor_sair, btn_sair_rect, border_radius=10)
+                txt_sair = font_botao.render("Sair", True, (0, 0, 0))
+                screen.blit(txt_sair, txt_sair.get_rect(center=btn_sair_rect.center))
+
+                pygame.display.flip()
+                clock.tick(60)
+
+            
 
 if __name__ == "__main__":
     Game().run()
