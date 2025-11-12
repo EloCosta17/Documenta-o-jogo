@@ -470,12 +470,12 @@ def jogar(screen, palavra, background, escolha):
             msg_rect = msg.get_rect(center=(screen.get_width() // 2, 250))
             screen.blit(msg, msg_rect)
 
-            # Exibir pontuação final
+            #exibir pontuação final
             msg_pontos = font_msg.render(f"Sua pontuação: {pontuacao_final}", True, (255, 255, 255))
             pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 310))
             screen.blit(msg_pontos, pontos_rect)
 
-            # Botões
+            #botões
             font_botao = pygame.font.SysFont("Kristen ITC", 40)
             cor_normal = (255, 255, 255)
             cor_hover = (255, 0, 0)
@@ -499,21 +499,27 @@ def jogar(screen, palavra, background, escolha):
                             pygame.quit()
                             sys.exit()
 
-                # Redesenhar tudo
+                #redesenhar tudo
                 screen.blit(background, (0, 0))
                 screen.blit(overlay, (0, 0))
                 screen.blit(texto, rect_texto)
                 screen.blit(msg, msg_rect)
                 screen.blit(msg_pontos, pontos_rect)
 
-                # Botão Jogar Novamente
-                cor_jogar = cor_hover if btn_jogar_rect.collidepoint(mouse) else cor_normal
+                #botão Jogar Novamente
+                if btn_jogar_rect.collidepoint(mouse):
+                    cor_jogar = cor_hover
+                else:
+                    cor_jogar = cor_normal
                 pygame.draw.rect(screen, cor_jogar, btn_jogar_rect, border_radius=10)
                 txt_jogar = font_botao.render("Jogar Novamente", True, (0, 0, 0))
                 screen.blit(txt_jogar, txt_jogar.get_rect(center=btn_jogar_rect.center))
 
-                # Botão Sair
-                cor_sair = cor_hover if btn_sair_rect.collidepoint(mouse) else cor_normal
+                #botão Sair
+                if btn_sair_rect.collidepoint(mouse):
+                    cor_sair = cor_hover
+                else:
+                    cor_sair = cor_normal
                 pygame.draw.rect(screen, cor_sair, btn_sair_rect, border_radius=10)
                 txt_sair = font_botao.render("Sair", True, (0, 0, 0))
                 screen.blit(txt_sair, txt_sair.get_rect(center=btn_sair_rect.center))
@@ -538,12 +544,12 @@ def jogar(screen, palavra, background, escolha):
             msg_rect = msg.get_rect(center=(screen.get_width() // 2, 250))
             screen.blit(msg, msg_rect)
 
-            # Exibir pontuação final
+            #exibir pontuação final
             msg_pontos = font_msg.render(f"Sua pontuação: {pontuacao_final}", True, (WHITE))
             pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 310))
             screen.blit(msg_pontos, pontos_rect)
 
-            # Botões
+            #botões
             font_botao = pygame.font.SysFont("Kristen ITC", 40)
             cor_normal = (WHITE)
             cor_hover = (0, 255, 0)
@@ -567,21 +573,27 @@ def jogar(screen, palavra, background, escolha):
                             pygame.quit()
                             sys.exit()
 
-                # Redesenhar tudo
+                #redesenhar tudo
                 screen.blit(background, (0, 0))
                 screen.blit(overlay, (0, 0))
                 screen.blit(texto, rect_texto)
                 screen.blit(msg, msg_rect)
                 screen.blit(msg_pontos, pontos_rect)
 
-                # Botão Jogar Novamente
-                cor_jogar = cor_hover if btn_jogar_rect.collidepoint(mouse) else cor_normal
+                #botão Jogar Novamente
+                if btn_jogar_rect.collidepoint(mouse):
+                    cor_jogar = cor_hover
+                else:
+                    cor_jogar = cor_normal
                 pygame.draw.rect(screen, cor_jogar, btn_jogar_rect, border_radius=10)
                 txt_jogar = font_botao.render("Jogar Novamente", True, (0, 0, 0))
                 screen.blit(txt_jogar, txt_jogar.get_rect(center=btn_jogar_rect.center))
 
-                # Botão Sair
-                cor_sair = cor_hover if btn_sair_rect.collidepoint(mouse) else cor_normal
+                #botão Sair
+                if btn_sair_rect.collidepoint(mouse):
+                    cor_sair = cor_hover
+                else:
+                    cor_sair = cor_normal
                 pygame.draw.rect(screen, cor_sair, btn_sair_rect, border_radius=10)
                 txt_sair = font_botao.render("Sair", True, (0, 0, 0))
                 screen.blit(txt_sair, txt_sair.get_rect(center=btn_sair_rect.center))
