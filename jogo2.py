@@ -11,6 +11,8 @@ pygame.mixer.music.play(-1)
 #sons
 som_certo = pygame.mixer.Sound("sons/aparecer_letra.mp3")
 som_errado = pygame.mixer.Sound("sons/somdeerro.mp3")
+som_gameover = pygame.mixer.Sound("sons/gameover.mp3")
+som_win = pygame.mixer.Sound("sons/somvitória.mp3")
 
 # --------- Configurações ---------
 FPS = 60
@@ -455,6 +457,7 @@ def jogar(screen, palavra, background, escolha):
 
 
         def tela_game_over(screen, background, pontuacao_final):
+            som_gameover.play(-1)
             overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
             overlay.fill((0, 0, 0, 180))
             screen.blit(background, (0, 0))
@@ -529,6 +532,7 @@ def jogar(screen, palavra, background, escolha):
 
 
         def tela_win(screen, background, pontuacao_final):
+            som_win.play(-1)
             overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
             overlay.fill((0, 0, 0, 100))
             screen.blit(background, (0, 0))
