@@ -5,14 +5,14 @@ import random
 #músicas
 pygame.mixer.init()
 pygame.init()
-pygame.mixer.music.load("sons/musica_de_fundo.mp3")
+pygame.mixer.music.load("sons_musica_de_fundo.mp3")
 pygame.mixer.music.play(-1)
 
 #sons
-som_certo = pygame.mixer.Sound("sons/aparecer_letra.mp3")
-som_errado = pygame.mixer.Sound("sons/somdeerro.mp3")
-som_gameover = pygame.mixer.Sound("sons/gameover.mp3")
-som_win = pygame.mixer.Sound("sons/somvitória.mp3")
+som_certo = pygame.mixer.Sound("aparecer_letra.mp3")
+som_errado = pygame.mixer.Sound("sons_somdeerro.mp3")
+som_gameover = pygame.mixer.Sound("sons_gameover.mp3")
+som_win = pygame.mixer.Sound("sons_somvitória.mp3")
 
 # --------- Configurações ---------
 FPS = 60
@@ -30,15 +30,74 @@ FONT_MSG = pygame.font.Font(None, 36)
 
 #temas
 temas = {
-    "Professores": ["hugo", "joaildo", "eugenio", "saulo", "geam", "botinni"],
+    "Professores": ["hugo", "joaildo", "carlos eugenio", "saulo", "gian", "botinni"],
     "Matérias": ["matematica", "geografia", "biologia", "fisica", "quimica", "ingles"],
     "Geral": ["thales", "ricardo", "rose", "bloco d", "max", "artes"],
     "Cursos": {
-        "Informática": ["python", "desing web", "iuri", "processador", "romerito", "java"],
-        "Vestuário": ["croqui", "laila", "modelagem", "confecção", "cad", "confecção"],
+        "Informática": ["python", "design web", "anderson", "processador", "romerito", "java script"],
+        "Vestuário": ["croqui", "laila", "modelagem", "tecido", "cad", "confecçao"],
         "Eletrotécnica": ["circuito", "transformador", "jonas", "condutor", "isolamento","francisco"],
-        "Têxtil": ["algodão", "beneficiamento", "tecelagem", "tingimento","padronagem","alvejamento"]
+        "Têxtil": ["algodao", "beneficiamento", "tecelagem", "tingimento","padronagem","alvejamento"]
     }
+}
+
+# dicas
+dicas = {
+    #professores
+    "hugo": "Professor do eixo de Informática do IFRN Caicó.",
+    "joaildo": "Professor bastante conhecido na comunidade acadêmica.",
+    "carlos eugenio": "Professor ligado às ciências humanas no IFRN.",
+    "saulo": "Professor de  Química no IFRN Caicó.",
+    "gian": "Professor da área de Eletrotécnica.",
+    "botinni": "Um dos coordenadores mais legais do IFRN",
+
+    #materias
+    "matematica": "Área que estuda números, funções e cálculos.",
+    "geografia": "Área que estuda o espaço geográfico e o mundo.",
+    "biologia": "Área que estuda os seres vivos.",
+    "fisica": "Área que estuda movimento, energia e forças.",
+    "quimica": "Área que estuda substâncias e reações.",
+    "ingles": "Língua estrangeira ensinada no IFRN Caicó.",
+
+    #geral
+    "thales": "Servidor bem conhecido da comunidade do campus.",
+    "ricardo": "Diretor Geral do Campus Caicó.",
+    "rose": "Servidora bastante querida no IFRN Caicó.",
+    "bloco d": "Um dos blocos de salas de aula do IFRN Caicó.",
+    "max": "Figura conhecida pelos estudantes do campus.",
+    "artes": "Disciplina ligada à criatividade e expressão.",
+
+    #informatica
+    "python": "Linguagem de programação muito usada em iniciantes e profissionais.",
+    "design web": "Área voltada à criação e estrutura de sites.",
+    "anderson": "Professor da disciplina de redes.",
+    "processador": "Componente essencial que executa instruções do computador.",
+    "romerito": "Professor reconhecido no eixo de Informática.",
+    "java script": "Linguagem de programação muito usada em grandes sistemas.",
+
+    #vestuario
+    "croqui": "Desenho inicial usado para representar modelos de roupa.",
+    "laila": "Professora do curso de Vestuário.",
+    "modelagem": "Processo de criação de moldes para confecção.",
+    "tecido": "Material resultante entrelaçamento de fios, usado na confecção de roupas.",
+    "cad": "Ferramenta digital usada para modelagem de roupas.",
+    "confeçcao": "Etapa prática de produção de roupas.",
+
+    #eletro
+    "circuito": "Base fundamental para qualquer sistema elétrico.",
+    "transformador": "Equipamento que altera níveis de tensão elétrica.",
+    "jonas": "Professor do eixo de eletrotécnica.",
+    "condutor": "Material que permite passagem de corrente elétrica.",
+    "isolamento": "Material que impede passagem de corrente elétrica.",
+    "francisco": "Professor ligado à área elétrica do IFRN Caicó.",
+
+    #textil
+    "algodao": "Fibra natural muito usada na indústria têxtil.",
+    "beneficiamento": "Etapa que prepara fibras para uso na produção.",
+    "tecelagem": "Processo de transformar fios em tecido.",
+    "tingimento": "Processo que dá cor aos tecidos.",
+    "padronagem": "Definição de estampas e padrões.",
+    "alvejamento": "Processo químico usado para clarear fibras."
 }
 
 #efeito máquina de escrever
@@ -190,7 +249,7 @@ class Menu:
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((1280, 720))
-        self.background = pygame.image.load("imagens/desenho IF2.png").convert()
+        self.background = pygame.image.load("desenho IF2.png").convert()
 
     def run(self):
         menu = Menu(self.screen, self.background)
@@ -322,6 +381,84 @@ def desenhar_boneco(surface, erros, offset_y=0):
         pygame.draw.line(surface, BLACK, (400, 400 + offset_y), (470, 480 + offset_y), 6)
       
 
+def mostrar_dica(screen, background, texto):
+    overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
+    overlay.fill((0, 0, 0, 180))
+
+    font_titulo = pygame.font.SysFont("Kristen ITC", 50)
+    font_msg = pygame.font.SysFont("Arial", 30)
+
+    titulo = font_titulo.render("DICA", True, (0, 0, 255))
+    def split_text(msg, font, max_width):
+        palavras = msg.split(" ")
+        linhas = []
+        atual = ""
+        for p in palavras:
+            teste = (atual + " " + p).strip()
+            if font.size(teste)[0] <= max_width:
+                atual = teste
+            else:
+                linhas.append(atual)
+                atual = p
+        if atual:
+            linhas.append(atual)
+        return linhas
+
+   #caixadica
+    caixa_w, caixa_h = screen.get_width() - 800, 220
+    caixa_rect = pygame.Rect(0, 0, caixa_w, caixa_h)
+    caixa_rect.centerx = screen.get_width() // 2
+    caixa_rect.y = screen.get_height() // 2 - 200 
+
+    #mensagemdacaixa
+    linhas = split_text(texto, font_msg, caixa_w - 60)
+
+    #botao
+    btn_ok_rect = pygame.Rect(0, 0, 280, 60)
+    btn_ok_rect.centerx = screen.get_width() // 2
+    btn_ok_rect.top = caixa_rect.bottom + 20
+
+    clock = pygame.time.Clock()
+    esperando = True
+
+    while esperando:
+        mouse = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if btn_ok_rect.collidepoint(mouse):
+                    esperando = False
+
+        screen.blit(background, (0, 0))
+        screen.blit(overlay, (0, 0))
+
+        #caixa
+        pygame.draw.rect(screen, (200, 200, 200), caixa_rect, border_radius=20)
+       
+        #titulo
+        screen.blit(titulo, (caixa_rect.centerx - titulo.get_width()//2, caixa_rect.top + 5))
+
+        # Texto da dica (linhas)
+        start_y = caixa_rect.top + 80
+        for i, linha in enumerate(linhas):
+            rendered = font_msg.render(linha, True, (0, 0, 0))
+            screen.blit(rendered, (caixa_rect.centerx - rendered.get_width()//2, start_y + i * 34))
+
+        # botão
+        if btn_ok_rect.collidepoint(mouse):
+            cor = (0, 100, 255)
+        else:
+            cor = (0, 0, 255)
+        pygame.draw.rect(screen, cor, btn_ok_rect, border_radius=10)
+        txt_ok = font_msg.render("OK", True, (0, 0, 0))
+        screen.blit(txt_ok, txt_ok.get_rect(center=btn_ok_rect.center))
+
+        pygame.display.flip()
+        clock.tick(60)
+
+
 def jogar(screen, palavra, background, escolha):
     letras_certas = []
     letras_erradas = []
@@ -347,14 +484,25 @@ def jogar(screen, palavra, background, escolha):
     max_x = 1130
 
     #imagens dos botões
-    img_voltar = pygame.image.load("imagens/voltar_vermelho.png").convert_alpha()
-    img_sair = pygame.image.load("imagens/sair_vermelho.png").convert_alpha()
+    img_voltar = pygame.image.load("voltar_vermelho.png").convert_alpha()
+    img_sair = pygame.image.load("sair_vermelho.png").convert_alpha()
     img_voltar = pygame.transform.scale(img_voltar, (50, 50))
     img_sair = pygame.transform.scale(img_sair, (50, 50))
     pos_voltar = (screen.get_width() - 120, 20)
     pos_sair = (screen.get_width() - 60, 20)
     rect_voltar = pygame.Rect(pos_voltar, img_voltar.get_size())
     rect_sair = pygame.Rect(pos_sair, img_sair.get_size())
+    img_dica = pygame.image.load("dica.png").convert_alpha()
+    img_dica = pygame.transform.scale(img_dica, (50, 50))
+    pos_dica = (screen.get_width() - 180, 20)
+    rect_dica = pygame.Rect(pos_dica, img_dica.get_size())
+
+    #controledasdicas
+    dica_usada = False
+    CUSTO_DICA = 5
+    mostrar_dica_texto = ""
+    tempo_mensagem = 0
+    DURACAO_MENSAGEM = 3000 
 
     while rodando:
         screen.fill(WHITE)
@@ -371,7 +519,7 @@ def jogar(screen, palavra, background, escolha):
         exibida = ""
         for letra in palavra:
             if letra in letras_certas or letra == " ":
-                exibida += letra.upper() + " " #exibir letra acertada 
+                exibida += letra.upper() + " " #exibir letra certa 
             else:
                 exibida += "_ " #exibir espaço
 
@@ -400,6 +548,13 @@ def jogar(screen, palavra, background, escolha):
 
         screen.blit(img_voltar, pos_voltar)
         screen.blit(img_sair, pos_sair)
+        screen.blit(img_dica, pos_dica)
+
+        if mostrar_dica_texto and pygame.time.get_ticks() - tempo_mensagem < DURACAO_MENSAGEM:
+            msg_render = FONT_MSG.render(mostrar_dica_texto, True, (0, 0, 255))
+            screen.blit(msg_render, (screen.get_width()//2 - msg_render.get_width()//2, screen.get_height() - 80))
+        elif mostrar_dica_texto:
+            mostrar_dica_texto = ""
 
         pygame.display.flip()
 
@@ -407,15 +562,29 @@ def jogar(screen, palavra, background, escolha):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pygame.mouse.get_pos()
 
-                #verificação dos cliques botões (o de voltar tá com problema)
+                #verificação dos cliques botões
                 if rect_voltar.collidepoint(mouse):
                     return "voltar"
                 elif rect_sair.collidepoint(mouse):
                     pygame.quit()
                     sys.exit()
+                elif rect_dica.collidepoint(mouse):
+                    
+                    if dica_usada:
+                        mostrar_dica_texto = "Você já usou a dica nesta partida."
+                        tempo_mensagem = pygame.time.get_ticks()
+                    elif pontuacao < CUSTO_DICA:
+                        mostrar_dica_texto = "Pontos insuficientes para usar a dica."
+                        tempo_mensagem = pygame.time.get_ticks()
+                    else:
+                        pontuacao -= CUSTO_DICA
+                        dica_usada = True
+                        dica_text = dicas.get(palavra.lower(), "Sem dica disponível.")
+                        mostrar_dica(screen, background, dica_text)
 
                 #clique do teclado
                 x, y = inicio_x, inicio_y
@@ -446,7 +615,7 @@ def jogar(screen, palavra, background, escolha):
                     return "voltar"  # volta ao menu
                 rodando = False
 
-            elif all(letra in letras_certas for letra in palavra):
+            elif all(letra == " " or letra in letras_certas for letra in palavra):
                 pontuacao_final = pontuacao
                 resultado = tela_win(screen, background, pontuacao_final)
                 if resultado == "jogar_novamente":
@@ -473,12 +642,10 @@ def jogar(screen, palavra, background, escolha):
             msg_rect = msg.get_rect(center=(screen.get_width() // 2, 250))
             screen.blit(msg, msg_rect)
 
-            #exibir pontuação final
             msg_pontos = font_msg.render(f"Sua pontuação: {pontuacao_final}", True, (255, 255, 255))
             pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 310))
             screen.blit(msg_pontos, pontos_rect)
 
-            #botões
             font_botao = pygame.font.SysFont("Kristen ITC", 40)
             cor_normal = (255, 255, 255)
             cor_hover = (255, 0, 0)
@@ -497,19 +664,18 @@ def jogar(screen, palavra, background, escolha):
                         sys.exit()
                     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         if btn_jogar_rect.collidepoint(mouse):
+                            som_gameover.stop() 
                             return "jogar_novamente"
                         elif btn_sair_rect.collidepoint(mouse):
                             pygame.quit()
                             sys.exit()
 
-                #redesenhar tudo
                 screen.blit(background, (0, 0))
                 screen.blit(overlay, (0, 0))
                 screen.blit(texto, rect_texto)
                 screen.blit(msg, msg_rect)
                 screen.blit(msg_pontos, pontos_rect)
 
-                #botão Jogar Novamente
                 if btn_jogar_rect.collidepoint(mouse):
                     cor_jogar = cor_hover
                 else:
@@ -518,7 +684,6 @@ def jogar(screen, palavra, background, escolha):
                 txt_jogar = font_botao.render("Jogar Novamente", True, (0, 0, 0))
                 screen.blit(txt_jogar, txt_jogar.get_rect(center=btn_jogar_rect.center))
 
-                #botão Sair
                 if btn_sair_rect.collidepoint(mouse):
                     cor_sair = cor_hover
                 else:
@@ -529,7 +694,6 @@ def jogar(screen, palavra, background, escolha):
 
                 pygame.display.flip()
                 clock.tick(60)
-
 
         def tela_win(screen, background, pontuacao_final):
             som_win.play(-1)
@@ -572,7 +736,9 @@ def jogar(screen, palavra, background, escolha):
                         sys.exit()
                     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         if btn_jogar_rect.collidepoint(mouse):
+                            som_win.stop() 
                             return "jogar_novamente"
+                            
                         elif btn_sair_rect.collidepoint(mouse):
                             pygame.quit()
                             sys.exit()
@@ -608,6 +774,7 @@ def jogar(screen, palavra, background, escolha):
             
 if __name__ == "__main__":
     Game().run()
+
 
 
 
