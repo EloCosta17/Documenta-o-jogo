@@ -44,52 +44,52 @@ temas = {
 # dicas
 dicas = {
     #professores
-    "hugo": "Professor do eixo de Informática do IFRN Caicó.",
-    "joaildo": "Professor bastante conhecido na comunidade acadêmica.",
-    "carlos eugenio": "Professor ligado às ciências humanas no IFRN.",
-    "saulo": "Professor de  Química no IFRN Caicó.",
+    "hugo": "Professor de Informática no IFRN Caicó.",
+    "joaildo": "Professor bastante querido na comunidade acadêmica.",
+    "carlos eugenio": "É quem diz: tem que estudar no mínimo duas horas por dia .",
+    "saulo": "Professor de Química no IFRN Caicó.",
     "gian": "Professor da área de Eletrotécnica.",
     "botinni": "Um dos coordenadores mais legais do IFRN",
 
     #materias
-    "matematica": "Área que estuda números, funções e cálculos.",
-    "geografia": "Área que estuda o espaço geográfico e o mundo.",
-    "biologia": "Área que estuda os seres vivos.",
+    "matematica": "Muito importante para Enem.",
+    "geografia": "Faz parte das ciências humanas.",
+    "biologia": "O terror dos quartos anos.",
     "fisica": "Área que estuda movimento, energia e forças.",
-    "quimica": "Área que estuda substâncias e reações.",
-    "ingles": "Língua estrangeira ensinada no IFRN Caicó.",
+    "quimica": "Envolve experimentos.",
+    "ingles": "Língua estrangeira",
 
     #geral
-    "thales": "Servidor bem conhecido da comunidade do campus.",
-    "ricardo": "Diretor Geral do Campus Caicó.",
+    "thales": "O mais temido nos corredores.",
+    "ricardo": "Tem uma careca bonita.",
     "rose": "Servidora bastante querida no IFRN Caicó.",
-    "bloco d": "Um dos blocos de salas de aula do IFRN Caicó.",
-    "max": "Figura conhecida pelos estudantes do campus.",
+    "bloco d": "Lugar dos namorados(e amantes).",
+    "max": "Professor de informática.",
     "artes": "Disciplina ligada à criatividade e expressão.",
 
     #informatica
-    "python": "Linguagem de programação muito usada em iniciantes e profissionais.",
+    "python": "Cobrinhas.",
     "design web": "Área voltada à criação e estrutura de sites.",
     "anderson": "Professor da disciplina de redes.",
     "processador": "Componente essencial que executa instruções do computador.",
-    "romerito": "Professor reconhecido no eixo de Informática.",
+    "romerito": "Corre muito, inclusive dos alunos.",
     "java script": "Linguagem de programação muito usada em grandes sistemas.",
 
     #vestuario
     "croqui": "Desenho inicial usado para representar modelos de roupa.",
     "laila": "Professora do curso de Vestuário.",
-    "modelagem": "Processo de criação de moldes para confecção.",
-    "tecido": "Material resultante entrelaçamento de fios, usado na confecção de roupas.",
+    "modelagem": "Processo de criação de moldes.",
+    "tecido": "Material usado na confecção de roupas.",
     "cad": "Ferramenta digital usada para modelagem de roupas.",
     "confeçcao": "Etapa prática de produção de roupas.",
 
     #eletro
     "circuito": "Base fundamental para qualquer sistema elétrico.",
     "transformador": "Equipamento que altera níveis de tensão elétrica.",
-    "jonas": "Professor do eixo de eletrotécnica.",
+    "jonas": "Meu malvado favorito.",
     "condutor": "Material que permite passagem de corrente elétrica.",
     "isolamento": "Material que impede passagem de corrente elétrica.",
-    "francisco": "Professor ligado à área elétrica do IFRN Caicó.",
+    "francisco": "Professor.",
 
     #textil
     "algodao": "Fibra natural muito usada na indústria têxtil.",
