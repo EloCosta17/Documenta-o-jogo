@@ -5,14 +5,14 @@ import random
 #músicas
 pygame.mixer.init()
 pygame.init()
-pygame.mixer.music.load("sons_musica_de_fundo.mp3")
+pygame.mixer.music.load("sons/musica_de_fundo.mp3")
 pygame.mixer.music.play(-1)
 
 #sons
-som_certo = pygame.mixer.Sound("aparecer_letra.mp3")
-som_errado = pygame.mixer.Sound("sons_somdeerro.mp3")
-som_gameover = pygame.mixer.Sound("sons_gameover.mp3")
-som_win = pygame.mixer.Sound("sons_somvitória.mp3")
+som_certo = pygame.mixer.Sound("sons/aparecer_letra.mp3")
+som_errado = pygame.mixer.Sound("sons/somdeerro.mp3")
+som_gameover = pygame.mixer.Sound("sons/gameover.mp3")
+som_win = pygame.mixer.Sound("sons/somvitória.mp3")
 
 # --------- Configurações ---------
 FPS = 60
@@ -249,7 +249,7 @@ class Menu:
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((1280, 720))
-        self.background = pygame.image.load("desenho IF2.png").convert()
+        self.background = pygame.image.load("imagens/desenho IF2.png").convert()
 
     def run(self):
         menu = Menu(self.screen, self.background)
@@ -484,15 +484,15 @@ def jogar(screen, palavra, background, escolha):
     max_x = 1130
 
     #imagens dos botões
-    img_voltar = pygame.image.load("voltar_vermelho.png").convert_alpha()
-    img_sair = pygame.image.load("sair_vermelho.png").convert_alpha()
+    img_voltar = pygame.image.load("imagens/voltar_vermelho.png").convert_alpha()
+    img_sair = pygame.image.load("imagens/sair_vermelho.png").convert_alpha()
     img_voltar = pygame.transform.scale(img_voltar, (50, 50))
     img_sair = pygame.transform.scale(img_sair, (50, 50))
     pos_voltar = (screen.get_width() - 120, 20)
     pos_sair = (screen.get_width() - 60, 20)
     rect_voltar = pygame.Rect(pos_voltar, img_voltar.get_size())
     rect_sair = pygame.Rect(pos_sair, img_sair.get_size())
-    img_dica = pygame.image.load("dica.png").convert_alpha()
+    img_dica = pygame.image.load("imagens/dica.png").convert_alpha()
     img_dica = pygame.transform.scale(img_dica, (50, 50))
     pos_dica = (screen.get_width() - 180, 20)
     rect_dica = pygame.Rect(pos_dica, img_dica.get_size())
