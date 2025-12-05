@@ -13,7 +13,7 @@ som_certo = pygame.mixer.Sound("sons/aparecer_letra.mp3")
 som_errado = pygame.mixer.Sound("sons/somdeerro.mp3")
 som_gameover = pygame.mixer.Sound("sons/gameover.mp3")
 som_win = pygame.mixer.Sound("sons/somvitória.mp3")
-
+som_dica = pygame.mixer.Sound("sons/somdica.mp3")
 # --------- Configurações ---------
 FPS = 60
 
@@ -565,7 +565,7 @@ def jogar(screen, palavra, background, escolha):
 
             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 mouse = pygame.mouse.get_pos()
-
+                
                 #verificação dos cliques botões
                 if rect_voltar.collidepoint(mouse):
                     return "voltar"
@@ -573,6 +573,7 @@ def jogar(screen, palavra, background, escolha):
                     pygame.quit()
                     sys.exit()
                 elif rect_dica.collidepoint(mouse):
+                    som_dica.play() 
                     
                     if dica_usada:
                         mostrar_dica_texto = "Você já usou a dica nesta partida."
