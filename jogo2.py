@@ -611,7 +611,7 @@ def jogar(screen, palavra, background, escolha):
             #mensagens finais
             if chances == 0:
                 pontuacao_final = pontuacao
-                resultado = tela_game_over(screen, background, pontuacao_final)
+                resultado = tela_game_over(screen, background, pontuacao_final, palavra)
                 if resultado == "jogar_novamente":
                     return "voltar"  # volta ao menu
                 rodando = False
@@ -626,7 +626,7 @@ def jogar(screen, palavra, background, escolha):
         clock.tick(FPS)
 
 
-        def tela_game_over(screen, background, pontuacao_final):
+        def tela_game_over(screen, background, pontuacao_final, palavra):
             som_gameover.play(-1)
             overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
             overlay.fill((0, 0, 0, 180))
@@ -643,8 +643,14 @@ def jogar(screen, palavra, background, escolha):
             msg_rect = msg.get_rect(center=(screen.get_width() // 2, 250))
             screen.blit(msg, msg_rect)
 
+            # <<< NOVO TRECHO AQUI >>>
+            msg_palavra = font_msg.render(f"A palavra era: {palavra.upper()}", True, (255, 255, 255))
+            msg_palavra_rect = msg_palavra.get_rect(center=(screen.get_width() // 2, 310))
+            screen.blit(msg_palavra, msg_palavra_rect)
+            # <<< FIM DO TRECHO NOVO >>>
+
             msg_pontos = font_msg.render(f"Sua pontuação: {pontuacao_final}", True, (255, 255, 255))
-            pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 310))
+            pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 370))
             screen.blit(msg_pontos, pontos_rect)
 
             font_botao = pygame.font.SysFont("Kristen ITC", 40)
@@ -665,7 +671,7 @@ def jogar(screen, palavra, background, escolha):
                         sys.exit()
                     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         if btn_jogar_rect.collidepoint(mouse):
-                            som_gameover.stop() 
+                            som_gameover.stop()
                             return "jogar_novamente"
                         elif btn_sair_rect.collidepoint(mouse):
                             pygame.quit()
@@ -675,20 +681,15 @@ def jogar(screen, palavra, background, escolha):
                 screen.blit(overlay, (0, 0))
                 screen.blit(texto, rect_texto)
                 screen.blit(msg, msg_rect)
+                screen.blit(msg_palavra, msg_palavra_rect)
                 screen.blit(msg_pontos, pontos_rect)
 
-                if btn_jogar_rect.collidepoint(mouse):
-                    cor_jogar = cor_hover
-                else:
-                    cor_jogar = cor_normal
+                cor_jogar = cor_hover if btn_jogar_rect.collidepoint(mouse) else cor_normal
                 pygame.draw.rect(screen, cor_jogar, btn_jogar_rect, border_radius=10)
                 txt_jogar = font_botao.render("Jogar Novamente", True, (0, 0, 0))
                 screen.blit(txt_jogar, txt_jogar.get_rect(center=btn_jogar_rect.center))
 
-                if btn_sair_rect.collidepoint(mouse):
-                    cor_sair = cor_hover
-                else:
-                    cor_sair = cor_normal
+                cor_sair = cor_hover if btn_sair_rect.collidepoint(mouse) else cor_normal
                 pygame.draw.rect(screen, cor_sair, btn_sair_rect, border_radius=10)
                 txt_sair = font_botao.render("Sair", True, (0, 0, 0))
                 screen.blit(txt_sair, txt_sair.get_rect(center=btn_sair_rect.center))
@@ -775,7 +776,6 @@ def jogar(screen, palavra, background, escolha):
             
 if __name__ == "__main__":
     Game().run()
-
 
 
 
