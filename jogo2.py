@@ -1,7 +1,58 @@
 import pygame
 import sys
 import random
+import os
 
+temas = {}
+dicas = {}
+
+def carregar_palavras_arquivo(caminho):
+    if not os.path.exists(caminho):
+        print("Arquivo de palavras não encontrado. Usando dados internos.")
+        return None
+
+    temas = {}
+    tema_atual = None
+
+    with open(caminho, "r", encoding="utf-8") as f:
+        for linha in f:
+            linha = linha.strip()
+
+            if not linha:
+                continue
+
+            if linha.startswith("[") and linha.endswith("]"):
+                tema_atual = linha[1:-1]
+                temas[tema_atual] = []
+            else:
+                if tema_atual:
+                    temas[tema_atual].append(linha.lower())
+
+    return temas
+
+def carregar_dicas_arquivo(caminho):
+    if not os.path.exists(caminho):
+        print("Arquivo de dicas não encontrado. Usando dados internos.")
+        return None
+
+    dicas = {}
+
+    with open(caminho, "r", encoding="utf-8") as f:
+        for linha in f:
+            if ":" in linha:
+                palavra, dica = linha.split(":", 1)
+                dicas[palavra.strip().lower()] = dica.strip()
+
+    return dicas
+
+temas_arquivo = carregar_palavras_arquivo("palavras.txt")
+if temas_arquivo:
+    temas = temas_arquivo
+
+dicas_arquivo = carregar_dicas_arquivo("dicas.txt")
+if dicas_arquivo:
+    dicas = dicas_arquivo
+    
 #músicas
 pygame.mixer.init()
 pygame.init()
@@ -28,77 +79,24 @@ pygame.display.set_caption("Jogo da forca - IFCA")
 FONT = pygame.font.SysFont("Kristen ITC", 60)
 FONT_MSG = pygame.font.Font(None, 36)
 
-#temas
-temas = {
-    "Professores": ["hugo", "joaildo", "carlos eugenio", "saulo", "gian", "botinni"],
-    "Matérias": ["matematica", "geografia", "biologia", "fisica", "quimica", "ingles"],
-    "Geral": ["thales", "ricardo", "rose", "bloco d", "max", "artes"],
-    "Cursos": {
-        "Informática": ["python", "design web", "anderson", "processador", "romerito", "java script"],
-        "Vestuário": ["croqui", "laila", "modelagem", "tecido", "cad", "confecçao"],
-        "Eletrotécnica": ["circuito", "transformador", "jonas", "condutor", "isolamento","francisco"],
-        "Têxtil": ["algodao", "beneficiamento", "tecelagem", "tingimento","padronagem","alvejamento"]
+temas_arquivo = carregar_palavras_arquivo("palavras.txt")
+if temas_arquivo:
+    # Converter o formato para combinar com o sistema de cursos
+    temas = {
+        "Professores": temas_arquivo.get("Professores", []),
+        "Matérias": temas_arquivo.get("Matérias", []),
+        "Geral": temas_arquivo.get("Geral", []),
+        "Cursos": {
+            "Informática": temas_arquivo.get("Informática", []),
+            "Vestuário": temas_arquivo.get("Vestuário", []),
+            "Eletrotécnica": temas_arquivo.get("Eletrotécnica", []),
+            "Têxtil": temas_arquivo.get("Têxtil", []),
+        }
     }
-}
 
-# dicas
-dicas = {
-    #professores
-    "hugo": "Professor de Informática no IFRN Caicó.",
-    "joaildo": "Professor bastante querido na comunidade acadêmica.",
-    "carlos eugenio": "É quem diz: tem que estudar no mínimo duas horas por dia .",
-    "saulo": "Professor de Química no IFRN Caicó.",
-    "gian": "Professor da área de Eletrotécnica.",
-    "botinni": "Um dos coordenadores mais legais do IFRN",
-
-    #materias
-    "matematica": "Muito importante para Enem.",
-    "geografia": "Faz parte das ciências humanas.",
-    "biologia": "O terror dos quartos anos.",
-    "fisica": "Área que estuda movimento, energia e forças.",
-    "quimica": "Envolve experimentos.",
-    "ingles": "Língua estrangeira",
-
-    #geral
-    "thales": "O mais temido nos corredores.",
-    "ricardo": "Tem uma careca bonita.",
-    "rose": "Servidora bastante querida no IFRN Caicó.",
-    "bloco d": "Lugar dos namorados(e amantes).",
-    "max": "Professor de informática.",
-    "artes": "Disciplina ligada à criatividade e expressão.",
-
-    #informatica
-    "python": "Cobrinhas.",
-    "design web": "Área voltada à criação e estrutura de sites.",
-    "anderson": "Professor da disciplina de redes.",
-    "processador": "Componente essencial que executa instruções do computador.",
-    "romerito": "Corre muito, inclusive dos alunos.",
-    "java script": "Linguagem de programação muito usada em grandes sistemas.",
-
-    #vestuario
-    "croqui": "Desenho inicial usado para representar modelos de roupa.",
-    "laila": "Professora do curso de Vestuário.",
-    "modelagem": "Processo de criação de moldes.",
-    "tecido": "Material usado na confecção de roupas.",
-    "cad": "Ferramenta digital usada para modelagem de roupas.",
-    "confeçcao": "Etapa prática de produção de roupas.",
-
-    #eletro
-    "circuito": "Base fundamental para qualquer sistema elétrico.",
-    "transformador": "Equipamento que altera níveis de tensão elétrica.",
-    "jonas": "Meu malvado favorito.",
-    "condutor": "Material que permite passagem de corrente elétrica.",
-    "isolamento": "Material que impede passagem de corrente elétrica.",
-    "francisco": "Professor.",
-
-    #textil
-    "algodao": "Fibra natural muito usada na indústria têxtil.",
-    "beneficiamento": "Etapa que prepara fibras para uso na produção.",
-    "tecelagem": "Processo de transformar fios em tecido.",
-    "tingimento": "Processo que dá cor aos tecidos.",
-    "padronagem": "Definição de estampas e padrões.",
-    "alvejamento": "Processo químico usado para clarear fibras."
-}
+dicas_arquivo = carregar_dicas_arquivo("dicas.txt")
+if dicas_arquivo:
+    dicas.update(dicas_arquivo)  # Substitui/atualiza dicas internas
 
 #efeito máquina de escrever
 def texto_digitado(surface, texto, x, y, cor, delay=20):
@@ -611,7 +609,7 @@ def jogar(screen, palavra, background, escolha):
             #mensagens finais
             if chances == 0:
                 pontuacao_final = pontuacao
-                resultado = tela_game_over(screen, background, pontuacao_final)
+                resultado = tela_game_over(screen, background, pontuacao_final, palavra)
                 if resultado == "jogar_novamente":
                     return "voltar"  # volta ao menu
                 rodando = False
@@ -626,7 +624,7 @@ def jogar(screen, palavra, background, escolha):
         clock.tick(FPS)
 
 
-        def tela_game_over(screen, background, pontuacao_final):
+        def tela_game_over(screen, background, pontuacao_final, palavra):
             som_gameover.play(-1)
             overlay = pygame.Surface(screen.get_size(), pygame.SRCALPHA)
             overlay.fill((0, 0, 0, 180))
@@ -643,8 +641,14 @@ def jogar(screen, palavra, background, escolha):
             msg_rect = msg.get_rect(center=(screen.get_width() // 2, 250))
             screen.blit(msg, msg_rect)
 
+            # <<< NOVO TRECHO AQUI >>>
+            msg_palavra = font_msg.render(f"A palavra era: {palavra.upper()}", True, (255, 255, 255))
+            msg_palavra_rect = msg_palavra.get_rect(center=(screen.get_width() // 2, 310))
+            screen.blit(msg_palavra, msg_palavra_rect)
+            # <<< FIM DO TRECHO NOVO >>>
+
             msg_pontos = font_msg.render(f"Sua pontuação: {pontuacao_final}", True, (255, 255, 255))
-            pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 310))
+            pontos_rect = msg_pontos.get_rect(center=(screen.get_width() // 2, 370))
             screen.blit(msg_pontos, pontos_rect)
 
             font_botao = pygame.font.SysFont("Kristen ITC", 40)
@@ -665,7 +669,7 @@ def jogar(screen, palavra, background, escolha):
                         sys.exit()
                     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                         if btn_jogar_rect.collidepoint(mouse):
-                            som_gameover.stop() 
+                            som_gameover.stop()
                             return "jogar_novamente"
                         elif btn_sair_rect.collidepoint(mouse):
                             pygame.quit()
@@ -675,20 +679,15 @@ def jogar(screen, palavra, background, escolha):
                 screen.blit(overlay, (0, 0))
                 screen.blit(texto, rect_texto)
                 screen.blit(msg, msg_rect)
+                screen.blit(msg_palavra, msg_palavra_rect)
                 screen.blit(msg_pontos, pontos_rect)
 
-                if btn_jogar_rect.collidepoint(mouse):
-                    cor_jogar = cor_hover
-                else:
-                    cor_jogar = cor_normal
+                cor_jogar = cor_hover if btn_jogar_rect.collidepoint(mouse) else cor_normal
                 pygame.draw.rect(screen, cor_jogar, btn_jogar_rect, border_radius=10)
                 txt_jogar = font_botao.render("Jogar Novamente", True, (0, 0, 0))
                 screen.blit(txt_jogar, txt_jogar.get_rect(center=btn_jogar_rect.center))
 
-                if btn_sair_rect.collidepoint(mouse):
-                    cor_sair = cor_hover
-                else:
-                    cor_sair = cor_normal
+                cor_sair = cor_hover if btn_sair_rect.collidepoint(mouse) else cor_normal
                 pygame.draw.rect(screen, cor_sair, btn_sair_rect, border_radius=10)
                 txt_sair = font_botao.render("Sair", True, (0, 0, 0))
                 screen.blit(txt_sair, txt_sair.get_rect(center=btn_sair_rect.center))

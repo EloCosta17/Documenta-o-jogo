@@ -1,0 +1,48 @@
+hugo : Professor de Informática no IFRN Caicó.
+joaildo : Professor bastante querido na comunidade acadêmica.
+carlos eugenio : É quem diz: tem que estudar no mínimo duas horas por dia.
+saulo : Professor de Química no IFRN Caicó.
+gian : Professor da área de Eletrotécnica.
+botinni : Um dos coordenadores mais legais do IFRN.
+
+matematica : Muito importante para Enem.
+geografia : Faz parte das ciências humanas.
+biologia : O terror dos quartos anos.
+fisica : Área que estuda movimento, energia e forças.
+quimica : Envolve experimentos.
+ingles : Língua estrangeira.
+
+thales : O mais temido nos corredores.
+ricardo : Tem uma careca bonita.
+rose : Servidora bastante querida no IFRN Caicó.
+bloco d : Lugar dos namorados(e amantes).
+max : Professor de informática.
+artes : Disciplina ligada à criatividade e expressão.
+
+python : Cobrinhas.
+design web : Área voltada à criação e estrutura de sites.
+anderson : Professor da disciplina de redes.
+processador : Componente essencial que executa instruções do computador.
+romerito : Corre muito, inclusive dos alunos.
+java script : Linguagem de programação muito usada.
+
+croqui : Desenho inicial usado para roupas.
+laila : Professora do curso de Vestuário.
+modelagem : Processo de criação de moldes.
+tecido : Material usado na confecção de roupas.
+cad : Ferramenta digital usada para modelagem.
+confeçcao : Etapa prática de produção.
+
+circuito : Base de qualquer sistema elétrico.
+transformador : Altera níveis de tensão.
+jonas : Meu malvado favorito.
+condutor : Permite passagem de corrente.
+isolamento : Impede passagem de corrente.
+francisco : Professor.
+
+algodao : Fibra natural muito usada.
+beneficiamento : Prepara fibras para uso.
+tecelagem : Transforma fios em tecido.
+tingimento : Dá cor ao tecido.
+padronagem : Define estampas.
+alvejamento : Processo para clarear fibras.

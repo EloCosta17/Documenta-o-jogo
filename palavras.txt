@@ -1,0 +1,55 @@
+[Professores]
+hugo
+joaildo
+carlos eugenio
+saulo
+gian
+botinni
+
+[Matérias]
+matematica
+geografia
+biologia
+fisica
+quimica
+ingles
+
+[Geral]
+thales
+ricardo
+rose
+bloco d
+max
+artes
+
+[Informática]
+python
+design web
+anderson
+processador
+romerito
+java script
+
+[Vestuário]
+croqui
+laila
+modelagem
+tecido
+cad
+confeçcao
+
+[Eletrotécnica]
+circuito
+transformador
+jonas
+condutor
+isolamento
+francisco
+
+[Têxtil]
+algodao
+beneficiamento
+tecelagem
+tingimento
+padronagem
+alvejamento
