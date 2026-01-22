@@ -81,7 +81,7 @@ FONT_MSG = pygame.font.Font(None, 36)
 
 temas_arquivo = carregar_palavras_arquivo("palavras.txt")
 if temas_arquivo:
-    # Converter o formato para combinar com o sistema de cursos
+    #converte o formato para combinar com o sistema de cursos
     temas = {
         "Professores": temas_arquivo.get("Professores", []),
         "Matérias": temas_arquivo.get("Matérias", []),
@@ -96,7 +96,7 @@ if temas_arquivo:
 
 dicas_arquivo = carregar_dicas_arquivo("dicas.txt")
 if dicas_arquivo:
-    dicas.update(dicas_arquivo)  # Substitui/atualiza dicas internas
+    dicas.update(dicas_arquivo)  #para substituir e atualizar as dicas 
 
 #efeito máquina de escrever
 def texto_digitado(surface, texto, x, y, cor, delay=20):
@@ -175,8 +175,7 @@ class Menu:
 
         self.buttons = [
             Button("Iniciar Jogo", (mid_x, start_y), self.start_game),
-            Button("Opções",(mid_x, start_y + gap), self.show_options),
-            Button("Sair",(mid_x, start_y + 2 * gap), self.exit_game),
+            Button("Sair",(mid_x, start_y + gap), self.exit_game),
         ]
         self.running = True
 
@@ -276,18 +275,14 @@ class Temas:
         mid_x = screen_width // 2
         start_y = screen_height // 2 - 120
         gap = 80
-
         self.selected = None
         self.modo = modo
         self.running = True
 
         largura = 720
         altura = 500
-        self.container_rect = pygame.Rect(
-            (screen_width - largura) // 2,
-            (screen_height - altura) // 2,
-            largura,altura
-        )
+        self.container_rect = pygame.Rect((screen_width - largura) // 2,(screen_height - altura) // 2,largura,altura)
+        
         if modo == "principal":
             self.buttons = [
                 Button("Professores",(mid_x, start_y),self.select_professores, tema=True),
